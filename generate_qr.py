@@ -1,17 +1,15 @@
-import qrcode
-import hashlib
-from datetime import datetime
+import qrcode, hashlib
 import tkinter as tk
 from PIL import Image, ImageTk
+from datetime import datetime
+import time
 
 SECRET = 'my_super_secret_phrase'
-SERVER_URL = 'http://172.19.2.165:5000/attendance'  # ← Point this to app.py server
-CODE_DURATION = 30  # seconds
+SERVER_URL = 'https://your-render-app-url.onrender.com'  # Replace this
 
 def get_current_code():
-    now = datetime.now()
-    time_slot = int(now.timestamp() // CODE_DURATION)
-    raw = f"{SECRET}-{time_slot}"
+    slot = int(datetime.now().timestamp() // 30)
+    raw = f"{SECRET}-{slot}"
     return hashlib.sha256(raw.encode()).hexdigest()[:6].upper()
 
 def start_qr_gui():
@@ -22,19 +20,17 @@ def start_qr_gui():
 
     def update_qr():
         code = get_current_code()
-        url = f"{SERVER_URL}?code={code}"
+        url = f"{SERVER_URL}/attendance?code={code}"
         img = qrcode.make(url)
         img.save("temp_qr.png")
-
         image = Image.open("temp_qr.png")
         photo = ImageTk.PhotoImage(image)
         label.config(image=photo)
         label.image = photo
-
-        root.after(5000, update_qr)  # Refresh QR every 5 sec
+        root.after(5000, update_qr)
 
     update_qr()
     root.mainloop()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     start_qr_gui()
