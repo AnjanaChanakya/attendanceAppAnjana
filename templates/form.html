@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mark Attendance</title>
+    <style>
+        body { font-family: Arial; padding: 2rem; }
+        label, input { display: block; margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+    <h2>Mark Your Attendance</h2>
+    <form action="/submit" method="post">
+        <label>Name: <input type="text" name="name" required></label>
+        <label>Student ID: <input type="text" name="student_id" required></label>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
